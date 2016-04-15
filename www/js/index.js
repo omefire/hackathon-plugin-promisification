@@ -27,6 +27,7 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+        document.addEventListener('click', this.onCameraBtnClicked, false);
     },
     // deviceready Event Handler
     //
@@ -35,6 +36,30 @@ var app = {
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
     },
+    
+    onCameraBtnClicked: function() {
+        
+        var cameraOptions = {
+            quality: 50,
+            sourceType: Camera.PictureSourceType.CAMERA,
+            saveToPhotoAlbum: false,
+            destinationType: Camera.DestinationType.FILE_URI  
+        };
+        
+        var onCameraSuccess = function(imageURI) {
+            var image = document.getElementById('myImg');
+            image.src = imageURI;
+        };
+        
+        var onCameraFailure = function(message) {
+            alert('Failed because: ' + message);  
+        };
+        
+        //navigator.camera.getPicture(onCameraSuccess, onCameraFailure, cameraOptions);
+        //var p = navigator.camera.getPicture(cameraOptions);
+        navigator.camera.getPicture(cameraOptions).then(onCameraSuccess, onCameraFailure);
+    },
+    
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         var parentElement = document.getElementById(id);
